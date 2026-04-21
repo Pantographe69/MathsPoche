@@ -1,3 +1,5 @@
+"use client";
+
 import { AppShell } from "@/components/layout/AppShell";
 import { ExerciceListItem } from "@/components/exercices/ExerciceListItem";
 import { EXERCICES, type ExerciceCategory } from "@/content/exercices/metadata";
