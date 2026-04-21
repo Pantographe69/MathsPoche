@@ -34,18 +34,24 @@ export const useMathPocheStore = create<MathPocheStore>()(
       // Progress
       progress: {},
       setProgress: (slug, data) =>
-        set((state) => ({
-          progress: {
-            ...state.progress,
-            [slug]: {
-              slug,
-              status:   "inprogress",
-              attempts: 0,
-              ...state.progress[slug],
-              ...data,
+        set((state) => {
+          // On prépare l'objet de base pour éviter les doublons
+          const currentProgress = state.progress[slug] || {
+            slug,
+            status: "todo" as const,
+            attempts: 0,
+          };
+
+          return {
+            progress: {
+              ...state.progress,
+              [slug]: {
+                ...currentProgress,
+                ...data,
+              },
             },
-          },
-        })),
+          };
+        }),
       getProgress: (slug) => get().progress[slug],
 
       // Streak
