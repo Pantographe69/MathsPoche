@@ -1,0 +1,81 @@
+# Limites de suites
+
+## Définition intuitive
+
+La **limite** d'une suite $(u_n)$ décrit son comportement lorsque $n$ tend vers $+\infty$.
+
+$$\lim_{n \to +\infty} u_n = L \quad \Leftrightarrow \quad u_n \text{ se rapproche arbitrairement de } L$$
+
+---
+
+## Suites convergentes et divergentes
+
+- **Convergente** : $\lim_{n \to +\infty} u_n = L \in \mathbb{R}$
+- **Divergente vers $+\infty$** : $\lim_{n \to +\infty} u_n = +\infty$
+- **Divergente vers $-\infty$** : $\lim_{n \to +\infty} u_n = -\infty$
+- **Oscillante** : pas de limite (ex : $u_n = (-1)^n$)
+
+---
+
+## Limites usuelles
+
+| Suite | Limite |
+|-------|--------|
+| $u_n = c$ (constante) | $c$ |
+| $u_n = n^k$ ($k > 0$) | $+\infty$ |
+| $u_n = q^n$ avec $\|q\| < 1$ | $0$ |
+| $u_n = q^n$ avec $q > 1$ | $+\infty$ |
+| $u_n = \dfrac{1}{n^k}$ ($k > 0$) | $0$ |
+
+---
+
+## Règles opératoires
+
+Si $\lim u_n = L$ et $\lim v_n = M$ (finis) :
+
+$$\lim(u_n + v_n) = L + M \qquad \lim(u_n \cdot v_n) = LM$$
+
+### Formes indéterminées (FI) — à lever
+
+| Forme | Méthode |
+|-------|---------|
+| $+\infty - \infty$ | Factoriser par le terme dominant |
+| $\frac{\infty}{\infty}$ | Diviser num. et dén. par le terme dominant |
+| $0 \times \infty$ | Réécrire en fraction |
+| $1^\infty$ | Utiliser $e$ et $\ln$ |
+
+**Exemple :** $u_n = \dfrac{2n^2 + 3n}{5n^2 - 1}$
+
+$$u_n = \frac{n^2(2 + \frac{3}{n})}{n^2(5 - \frac{1}{n^2})} \xrightarrow[n\to\infty]{} \frac{2}{5}$$
+
+---
+
+## Théorème des gendarmes
+
+Si, à partir d'un certain rang, $a_n \leq u_n \leq b_n$ et si :
+
+$$\lim a_n = \lim b_n = L$$
+
+alors $\lim u_n = L$.
+
+**Exemple :** Montrer que $\lim \dfrac{\cos n}{n} = 0$
+
+$$-\frac{1}{n} \leq \frac{\cos n}{n} \leq \frac{1}{n}$$
+
+Comme $\lim \dfrac{-1}{n} = \lim \dfrac{1}{n} = 0$, par les gendarmes : $\lim \dfrac{\cos n}{n} = 0$.
+
+---
+
+## Suites monotones et bornées
+
+> **Théorème :** Toute suite croissante et majorée converge. Toute suite décroissante et minorée converge.
+
+Ce théorème garantit l'existence de la limite sans la calculer explicitement — utile pour les suites définies par récurrence.
+
+---
+
+## À retenir
+
+- Identifier d'abord la **forme** de la suite (géométrique, arithmétique, quotient de polynômes…).
+- Les FI nécessitent un **traitement algébrique** avant de conclure.
+- Le théorème des gendarmes est puissant pour les suites oscillantes bornées.

@@ -1,29 +1,17 @@
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import type { ExerciceMeta } from "@/content/exercices/metadata";
-
-type Status = "todo" | "inprogress" | "done";
+import type { ExerciceMeta } from "@/content/catalogue";
+import { CATEGORIE_META } from "@/content/catalogue";
 
 interface ExerciceListItemProps {
   exercice: ExerciceMeta;
-  status?:  Status;
+  showCours?: boolean;
 }
 
-const STATUS_STYLES: Record<Status, { dot: string; label: string }> = {
-  done:       { dot: "bg-[var(--green)]",  label: "Terminé" },
-  inprogress: { dot: "bg-[var(--amber)]",  label: "En cours" },
-  todo:       { dot: "bg-[var(--border-s)]", label: "À faire" },
-};
+const DIFF_LABEL = ["", "Facile", "Intermédiaire", "Difficile"];
 
-const TYPE_LABEL: Record<string, string> = {
-  "interactif":      "Interactif",
-  "etape-par-etape": "Étape par étape",
-  "guidé":           "Guidé",
-  "graphique":       "Graphique",
-};
-
-export function ExerciceListItem({ exercice, status = "todo" }: ExerciceListItemProps) {
-  const s = STATUS_STYLES[status];
+export function ExerciceListItem({ exercice, showCours }: ExerciceListItemProps) {
+  const cat = CATEGORIE_META[exercice.categorie];
 
   return (
     <Link
@@ -37,12 +25,11 @@ export function ExerciceListItem({ exercice, status = "todo" }: ExerciceListItem
     >
       {/* Icon */}
       <div
-        className="w-9 h-9 rounded-[8px] flex items-center justify-center flex-shrink-0 border"
+        className="w-9 h-9 rounded-[8px] flex items-center justify-center flex-shrink-0 border font-mono font-bold text-sm"
         style={{
           background:  "var(--elevated)",
           borderColor: "var(--border)",
-          fontSize:    "18px",
-          lineHeight:  1,
+          color: cat.color,
         }}
       >
         {exercice.icon}
@@ -57,20 +44,20 @@ export function ExerciceListItem({ exercice, status = "todo" }: ExerciceListItem
           {exercice.title}
         </p>
         <p className="font-mono text-[10.5px] mt-0.5" style={{ color: "var(--txt3)" }}>
-          {exercice.category.charAt(0).toUpperCase() + exercice.category.slice(1)}
+          {exercice.niveau}
           {" · "}
-          {exercice.duration}
+          {DIFF_LABEL[exercice.difficulte]}
           {" · "}
-          {TYPE_LABEL[exercice.type] ?? exercice.type}
+          {exercice.duree}
         </p>
       </div>
 
-      {/* Status dot */}
-      <span
-        className={cn("w-2 h-2 rounded-full flex-shrink-0", s.dot)}
-        aria-label={s.label}
-        title={s.label}
-      />
+      {/* Arrow */}
+      <svg width="9" height="9" viewBox="0 0 11 11" fill="none" aria-hidden
+        className="flex-shrink-0 opacity-30 group-hover:opacity-100 transition-opacity"
+        style={{ color: "var(--accent)" }}>
+        <path d="M2.5 5.5h6M6.5 3.5l2 2-2 2" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round"/>
+      </svg>
     </Link>
   );
 }

@@ -1,0 +1,67 @@
+# Théorème de Pythagore
+
+## Énoncé
+
+Dans un triangle **rectangle** en $C$, le carré de l'hypoténuse est égal à la somme des carrés des deux autres côtés.
+
+$$\boxed{AB^2 = AC^2 + BC^2}$$
+
+où $AB$ est l'hypoténuse (côté opposé à l'angle droit).
+
+---
+
+## Calculer une longueur inconnue
+
+### Trouver l'hypoténuse
+**Dans le triangle $ABC$ rectangle en $C$, avec $AC = 3$ cm et $BC = 4$ cm :**
+
+$$AB^2 = 3^2 + 4^2 = 9 + 16 = 25$$
+$$AB = \sqrt{25} = 5 \text{ cm}$$
+
+### Trouver un côté de l'angle droit
+**Dans le triangle $ABC$ rectangle en $C$, avec $AB = 13$ cm et $AC = 5$ cm :**
+
+$$BC^2 = AB^2 - AC^2 = 169 - 25 = 144$$
+$$BC = \sqrt{144} = 12 \text{ cm}$$
+
+---
+
+## Réciproque du théorème
+
+Si dans un triangle $ABC$ on a $AB^2 = AC^2 + BC^2$, **alors le triangle est rectangle en $C$**.
+
+**Exemple :** Un triangle a pour côtés $5$ cm, $12$ cm, $13$ cm. Est-il rectangle ?
+
+$$5^2 + 12^2 = 25 + 144 = 169 = 13^2 \quad \checkmark$$
+
+→ Le triangle est rectangle (angle droit en face du côté de 13 cm).
+
+---
+
+## Contraposée
+
+Si $AB^2 \neq AC^2 + BC^2$, alors le triangle **n'est pas rectangle**.
+
+**Exemple :** Côtés $4$, $5$, $7$ cm.
+
+$$4^2 + 5^2 = 16 + 25 = 41 \neq 49 = 7^2$$
+
+→ Le triangle n'est pas rectangle.
+
+---
+
+## Démonstration classique
+
+On peut construire des carrés sur chaque côté du triangle rectangle. L'**aire du grand carré** (sur l'hypoténuse) est égale à la **somme des aires** des deux petits carrés.
+
+---
+
+## À retenir
+
+| Situation | Formule |
+|-----------|---------|
+| Chercher l'hypoténuse | $c = \sqrt{a^2 + b^2}$ |
+| Chercher un côté de l'angle droit | $a = \sqrt{c^2 - b^2}$ |
+| Vérifier si rectangle | Tester si $c^2 = a^2 + b^2$ |
+
+> ⚠️ Le théorème ne s'applique **que dans un triangle rectangle**. Identifier l'angle droit est la première étape.

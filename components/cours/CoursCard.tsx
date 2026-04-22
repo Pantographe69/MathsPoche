@@ -2,58 +2,24 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-
-export type CoursCategory = "geometrie" | "algebre" | "fonctions" | "arithmetique";
+import type { Categorie, Niveau } from "@/content/catalogue";
+import { CATEGORIE_META } from "@/content/catalogue";
 
 interface CoursCardProps {
-  slug:        string;
-  title:       string;
-  description: string;
-  category:    CoursCategory;
-  level:       string;
-  difficulty:  1 | 2 | 3;
-  className?:  string;
+  slug:         string;
+  title:        string;
+  description:  string;
+  categorie:    Categorie;
+  niveau:       Niveau;
+  difficulte:   1 | 2 | 3;
+  nbExercices?: number;
+  className?:   string;
 }
 
-const CATEGORY_META: Record<CoursCategory, { label: string; icon: React.ReactNode }> = {
-  geometrie: {
-    label: "Géométrie",
-    icon: (
-      <svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden>
-        <path d="M8 1L15 13H1L8 1z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/>
-      </svg>
-    ),
-  },
-  algebre: {
-    label: "Algèbre",
-    icon: (
-      <svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden>
-        <path d="M2 8h12M8 2v12" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-  fonctions: {
-    label: "Fonctions",
-    icon: (
-      <svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden>
-        <path d="M1 13C3 13 4 3 7 3s3 10 5 10 2-4 3-4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-  arithmetique: {
-    label: "Arithmétique",
-    icon: (
-      <svg width="9" height="9" viewBox="0 0 16 16" fill="none" aria-hidden>
-        <path d="M3 8h10M8 3v10M4 4l8 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
-      </svg>
-    ),
-  },
-};
-
 export function CoursCard({
-  slug, title, description, category, level, difficulty, className,
+  slug, title, description, categorie, niveau, difficulte, nbExercices, className,
 }: CoursCardProps) {
-  const meta = CATEGORY_META[category];
+  const cat = CATEGORIE_META[categorie];
 
   return (
     <Link
@@ -70,10 +36,9 @@ export function CoursCard({
       {/* Category tag */}
       <div
         className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.08em] mb-2.5"
-        style={{ color: "var(--accent)" }}
+        style={{ color: cat.color }}
       >
-        {meta.icon}
-        {meta.label}
+        {cat.label}
       </div>
 
       {/* Title */}
@@ -98,10 +63,13 @@ export function CoursCard({
           {/* Difficulty pips */}
           <div className="level-pip">
             {[1, 2, 3].map((n) => (
-              <span key={n} className={n <= difficulty ? "filled" : ""} />
+              <span key={n} className={n <= difficulte ? "filled" : ""} />
             ))}
           </div>
-          <span className="font-mono text-[10px]">{level}</span>
+          <span className="font-mono text-[10px]">{niveau}</span>
+          {nbExercices !== undefined && (
+            <span className="font-mono text-[10px]">· {nbExercices} exo{nbExercices > 1 ? "s" : ""}</span>
+          )}
         </div>
 
         {/* Arrow */}

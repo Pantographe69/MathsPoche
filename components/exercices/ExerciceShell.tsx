@@ -2,25 +2,23 @@
 
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import type { ExerciceMeta } from "@/content/exercices/metadata";
+import type { ExerciceMeta } from "@/content/catalogue";
+import { CATEGORIE_META, COURS_BY_SLUG } from "@/content/catalogue";
 
 interface ExerciceShellProps {
   meta:     ExerciceMeta;
   children: React.ReactNode;
-  panel?:   React.ReactNode; // right-side panel (steps, hints, score)
 }
 
-const CATEGORY_LABEL: Record<string, string> = {
-  geometrie:    "Géométrie",
-  algebre:      "Algèbre",
-  arithmetique: "Arithmétique",
-  fonctions:    "Fonctions",
-};
+const DIFF_LABEL = ["", "Facile", "Intermédiaire", "Difficile"];
 
-export function ExerciceShell({ meta, children, panel }: ExerciceShellProps) {
+export function ExerciceShell({ meta, children }: ExerciceShellProps) {
+  const cat = CATEGORIE_META[meta.categorie];
+  const cours = COURS_BY_SLUG[meta.coursSlug];
+
   return (
     <>
-      {/* ── Top bar ──────────────────────────────────────────────────────── */}
+      {/* ── Top bar ───────────────────────────────────────────────────── */}
       <div
         className="sticky top-[var(--navbar-h)] z-50 flex items-center justify-between px-6 border-b"
         style={{
@@ -48,25 +46,22 @@ export function ExerciceShell({ meta, children, panel }: ExerciceShellProps) {
             Exercices
           </Link>
 
-          {/* Breadcrumb */}
           <div className="hidden sm:flex items-center gap-1.5 font-mono text-[11px]" style={{ color: "var(--txt3)" }}>
-            <span style={{ color: "var(--txt2)" }}>
-              {CATEGORY_LABEL[meta.category] ?? meta.category}
-            </span>
+            <span style={{ color: cat.color }}>{cat.label}</span>
             <span>›</span>
-            <span style={{ color: "var(--txt3)" }}>{meta.title}</span>
+            <span>{meta.title}</span>
           </div>
         </div>
 
-        {/* Right — difficulty & level */}
-        <div className="flex items-center gap-3">
+        {/* Right */}
+        <div className="flex items-center gap-2">
           <div className="hidden sm:flex items-center gap-2" style={{ color: "var(--txt3)" }}>
             <div className="level-pip">
               {[1, 2, 3].map((n) => (
-                <span key={n} className={n <= meta.difficulty ? "filled" : ""} />
+                <span key={n} className={n <= meta.difficulte ? "filled" : ""} />
               ))}
             </div>
-            <span className="font-mono text-[10px]">{meta.level}</span>
+            <span className="font-mono text-[10px]">{meta.niveau}</span>
           </div>
           <span
             className="font-mono text-[10px] px-2 py-1 rounded-[5px] border"
@@ -76,53 +71,69 @@ export function ExerciceShell({ meta, children, panel }: ExerciceShellProps) {
               background:  "var(--accent-muted)",
             }}
           >
-            {meta.duration}
+            {meta.duree}
           </span>
         </div>
       </div>
 
-      {/* ── Main grid ────────────────────────────────────────────────────── */}
-      <div
-        className="grid min-h-[calc(100vh-var(--navbar-h)-52px)]"
-        style={{
-          gridTemplateColumns: panel ? "1fr 320px" : "1fr",
-        }}
-      >
-        {/* Canvas / content zone */}
-        <div className="p-8 flex flex-col gap-6">
-          {/* Exercise header */}
-          <header className="flex flex-col gap-1.5">
-            <span
-              className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]"
-              style={{ color: "var(--accent)" }}
-            >
-              <span className="inline-block w-4 h-px" style={{ background: "var(--accent)" }} />
-              {CATEGORY_LABEL[meta.category]} · {meta.type}
-            </span>
-            <h1
-              className="font-display font-[800] text-[22px] tracking-tight"
-              style={{ color: "var(--txt)" }}
-            >
-              {meta.title}
-            </h1>
-            <p
-              className="font-body italic text-[14px] leading-relaxed"
-              style={{ color: "var(--txt2)" }}
-            >
-              {meta.description}
-            </p>
-          </header>
+      {/* ── Content ───────────────────────────────────────────────────── */}
+      <div className="max-w-[680px] mx-auto px-8 py-8 flex flex-col gap-6">
 
-          {children}
-        </div>
-
-        {/* Right panel */}
-        {panel && (
-          <div
-            className="border-l border-[var(--border)] p-6 flex flex-col gap-6 sticky top-[calc(var(--navbar-h)+52px)] self-start"
-            style={{ maxHeight: "calc(100vh - var(--navbar-h) - 52px)", overflowY: "auto" }}
+        {/* Exercise header */}
+        <header className="flex flex-col gap-1.5">
+          <span
+            className="inline-flex items-center gap-1.5 font-mono text-[10px] uppercase tracking-[0.1em]"
+            style={{ color: cat.color }}
           >
-            {panel}
+            <span className="inline-block w-4 h-px" style={{ background: cat.color }} />
+            {cat.label} · {DIFF_LABEL[meta.difficulte]}
+          </span>
+          <h1
+            className="font-display font-[800] text-[22px] tracking-tight"
+            style={{ color: "var(--txt)" }}
+          >
+            {meta.title}
+          </h1>
+          <p className="font-body italic text-[14px] leading-relaxed" style={{ color: "var(--txt2)" }}>
+            {meta.description}
+          </p>
+        </header>
+
+        {/* Exercise component */}
+        {children}
+
+        {/* Cours lié */}
+        {cours && (
+          <div
+            className="flex items-center gap-3 px-4 py-3 rounded-[10px] border mt-4"
+            style={{ borderColor: "var(--border)", background: "var(--elevated)" }}
+          >
+            <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden style={{ color: "var(--accent)", flexShrink: 0 }}>
+              <path d="M2 3h12v10H2zM2 6h12" stroke="currentColor" strokeWidth="1.4" strokeLinejoin="round"/>
+            </svg>
+            <div className="flex-1 min-w-0">
+              <p className="font-mono text-[10px] uppercase tracking-[0.08em]" style={{ color: "var(--txt3)" }}>
+                Cours associé
+              </p>
+              <Link
+                href={`/cours/${cours.slug}`}
+                className="font-display font-[600] text-[13px] no-underline hover:underline"
+                style={{ color: "var(--txt)" }}
+              >
+                {cours.title}
+              </Link>
+            </div>
+            <Link
+              href={`/cours/${cours.slug}`}
+              className={cn(
+                "font-mono text-[10px] no-underline px-2.5 py-1.5 rounded-[6px] border flex-shrink-0",
+                "border-[var(--border)] hover:border-[var(--accent)] hover:text-[var(--accent)]",
+                "transition-all duration-[180ms]"
+              )}
+              style={{ color: "var(--txt3)" }}
+            >
+              Voir le cours →
+            </Link>
           </div>
         )}
       </div>

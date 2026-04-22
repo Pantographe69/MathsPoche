@@ -1,63 +1,16 @@
-"use client";
-
 import { AppShell } from "@/components/layout/AppShell";
 import { CoursCard } from "@/components/cours/CoursCard";
-
-const ALL_COURS = [
-  {
-    slug: "geometrie-angles",
-    title: "Angles & droites parallèles",
-    description: "Angles alternes-internes, correspondants. Propriétés et démonstrations.",
-    category: "geometrie" as const,
-    level: "3ème",
-    difficulty: 2 as const,
-  },
-  {
-    slug: "pythagore",
-    title: "Théorème de Pythagore",
-    description: "Démonstration, applications, réciproque du théorème dans le triangle rectangle.",
-    category: "geometrie" as const,
-    level: "4ème",
-    difficulty: 2 as const,
-  },
-  {
-    slug: "equations-1er-degre",
-    title: "Équations du 1er degré",
-    description: "Résolution d'équations, mise en équation de problèmes concrets.",
-    category: "algebre" as const,
-    level: "4ème",
-    difficulty: 1 as const,
-  },
-  {
-    slug: "fractions",
-    title: "Fractions & simplifications",
-    description: "Opérations sur les fractions, simplification, fractions irréductibles.",
-    category: "arithmetique" as const,
-    level: "5ème",
-    difficulty: 1 as const,
-  },
-  {
-    slug: "fonctions-affines",
-    title: "Fonctions affines & linéaires",
-    description: "Représentation graphique, coefficient directeur, ordonnée à l'origine.",
-    category: "fonctions" as const,
-    level: "3ème",
-    difficulty: 3 as const,
-  },
-  {
-    slug: "developper-factoriser",
-    title: "Développer & factoriser",
-    description: "Identités remarquables, distributivité, factorisation d'expressions.",
-    category: "algebre" as const,
-    level: "3ème",
-    difficulty: 2 as const,
-  },
-];
+import { COURS, NIVEAUX } from "@/content/catalogue";
 
 export default function CoursPage() {
+  const coursByNiveau = NIVEAUX.map((niveau) => ({
+    niveau,
+    cours: COURS.filter((c) => c.niveau === niveau),
+  })).filter((g) => g.cours.length > 0);
+
   return (
     <AppShell>
-      <div className="max-w-[860px] mx-auto px-8 py-10 flex flex-col gap-8 animate-fade-in">
+      <div className="max-w-[860px] mx-auto px-8 py-10 flex flex-col gap-10 animate-fade-in">
 
         <header>
           <p className="font-mono text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: "var(--txt3)" }}>
@@ -70,16 +23,43 @@ export default function CoursPage() {
             Apprends à ton rythme
           </h1>
           <p className="font-body italic text-[14px] mt-1.5" style={{ color: "var(--txt2)" }}>
-            {ALL_COURS.length} fiches · collège et lycée
+            {COURS.length} fiches · de la 6ème à la Terminale
           </p>
         </header>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pb-16">
-          {ALL_COURS.map((cours) => (
-            <CoursCard key={cours.slug} {...cours} />
-          ))}
-        </div>
+        {coursByNiveau.map(({ niveau, cours }) => (
+          <section key={niveau} className="flex flex-col gap-3">
+            <div className="flex items-center gap-3">
+              <span
+                className="font-mono text-[10px] uppercase tracking-[0.12em] px-2 py-1 rounded border"
+                style={{
+                  color: "var(--accent)",
+                  borderColor: "rgba(79,110,247,0.3)",
+                  background: "var(--accent-muted)",
+                }}
+              >
+                {niveau}
+              </span>
+              <div className="flex-1 h-px" style={{ background: "var(--border)" }} />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+              {cours.map((c) => (
+                <CoursCard
+                  key={c.slug}
+                  slug={c.slug}
+                  title={c.title}
+                  description={c.description}
+                  categorie={c.categorie}
+                  niveau={c.niveau}
+                  difficulte={c.difficulte}
+                  nbExercices={c.exercices.length}
+                />
+              ))}
+            </div>
+          </section>
+        ))}
 
+        <div className="pb-10" />
       </div>
     </AppShell>
   );
