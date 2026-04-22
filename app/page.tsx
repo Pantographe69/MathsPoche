@@ -2,6 +2,7 @@ import { AppShell } from "@/components/layout/AppShell";
 import { CoursCard } from "@/components/cours/CoursCard";
 import { ExerciceListItem } from "@/components/exercices/ExerciceListItem";
 import { EXERCICES } from "@/content/exercices/metadata";
+import { SectionLabel } from "@/components/layout/SectionLabel";
 
 export default function HomePage() {
   const featuredCours = [
@@ -134,37 +135,4 @@ export default function HomePage() {
   );
 }
 
-/* ── Sub-components ─────────────────────────────────────────────────────────── */
-function SectionLabel({
-  label, href, count,
-}: {
-  label: string; href: string; count?: number;
-}) {
-  return (
-    <div className="flex items-center justify-between">
-      <p
-        className="font-mono text-[10px] uppercase tracking-[0.12em]"
-        style={{ color: "var(--txt3)" }}
-      >
-        {label}
-        {count !== undefined && (
-          <span
-            className="ml-2 px-1.5 py-0.5 rounded-full border font-mono text-[9px]"
-            style={{ color: "var(--txt3)", borderColor: "var(--border)", background: "var(--elevated)" }}
-          >
-            {count}
-          </span>
-        )}
-      </p>
-      <a
-        href={href}
-        className="font-mono text-[10px] no-underline transition-colors duration-[180ms]"
-        style={{ color: "var(--txt3)" }}
-        onMouseOver={(e) => (e.currentTarget.style.color = "var(--accent)")}
-        onMouseOut={(e) => (e.currentTarget.style.color = "var(--txt3)")}
-      >
-        Tout voir →
-      </a>
-    </div>
-  );
-}
+
